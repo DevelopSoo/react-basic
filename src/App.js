@@ -1,49 +1,90 @@
-import { useQuery, useMutation, useQueryClient } from "react-query";
-import axios from "axios";
-import { nanoid } from "nanoid";
+import { useState, useEffect } from "react";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+} from "firebase/auth";
+import { auth } from "./firebase";
 
 function App() {
-  const queryClient = new useQueryClient();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [currentUser, setCurrentUser] = useState(null);
 
-  const { data, isLoading, isError, error } = useQuery("posts", async () => {
-    const response = await axios.get("http://localhost:3001/posts");
-    return response.data;
-  });
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user?.email);
+    });
+  }, []);
 
-  const mutation = useMutation(
-    async (새로운데이터) => {
-      await axios.post("http://localhost:3001/posts", 새로운데이터);
-    },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries("posts");
-      },
-    }
-  );
-
-  if (isLoading) {
-    return <div>데이터 가져오는 중임</div>;
-  }
-  if (isError) {
-    return <div>{error.message}</div>;
-  }
   return (
-    <div>
-      {data.map((post) => {
-        return <div key={post.id}>{post.title}</div>;
-      })}
-      <button
-        onClick={() => {
-          mutation.mutate({
-            id: nanoid(),
-            title: "useState로 입력된 title",
-            author: "useState로 입력된 author",
-          });
-        }}
-      >
-        데이터추가!!
-      </button>
-    </div>
+    <>
+      {currentUser ? (
+        <>
+          <div>{currentUser}</div>
+          <button
+            onClick={async () => {
+              alert("로그아웃 할까?");
+              await signOut(auth);
+              // setCurrentUser(null);
+            }}
+          >
+            로그아웃
+          </button>
+        </>
+      ) : (
+        <>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
+          />
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+          />
+          <button
+            onClick={async () => {
+              try {
+                const userCredential = await createUserWithEmailAndPassword(
+                  auth,
+                  email,
+                  password
+                );
+                // setCurrentUser(userCredential.user.email);
+              } catch (error) {
+                console.error(error);
+              }
+            }}
+          >
+            회원가입
+          </button>
+          <button
+            onClick={async (event) => {
+              event.preventDefault();
+              try {
+                const userCredential = await signInWithEmailAndPassword(
+                  auth,
+                  email,
+                  password
+                );
+                // setCurrentUser(userCredential.user.email);
+              } catch (error) {
+                console.error(error);
+              }
+            }}
+          >
+            로그인
+          </button>
+        </>
+      )}
+    </>
   );
 }
 
