@@ -1,7 +1,7 @@
 import "./App.css";
 
 function App() {
-  return <div></div>;
+  return <div>로그인</div>;
 }
 
 export default App;
