@@ -1,0 +1,54 @@
+{
+  "posts": [
+    {
+      "id": "1",
+      "title": "a title",
+      "views": 100
+    },
+    {
+      "id": "2",
+      "title": "another title",
+      "views": 200
+    },
+    {
+      "id": "3",
+      "title": "하하하 title",
+      "views": 200
+    },
+    {
+      "id": "a38c",
+      "title": "adsfasdf",
+      "views": 0
+    },
+    {
+      "id": "85e0",
+      "title": "민희님 곰팡이 닦으세요",
+      "views": 0
+    },
+    {
+      "id": "2b29",
+      "title": "은지님 주차하실래요? 아니요",
+      "views": 0
+    },
+    {
+      "id": "466e",
+      "title": "하하하후후후asdfasdf",
+      "views": 0
+    }
+  ],
+  "comments": [
+    {
+      "id": "1",
+      "text": "a comment about post 1",
+      "postId": "1"
+    },
+    {
+      "id": "2",
+      "text": "another comment about post 1",
+      "postId": "1"
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}
