@@ -1,7 +1,7 @@
 // 1. Link import 하기
 import { Link, useNavigate } from "react-router-dom";
 
-export default function Main() {
+export default function Main({ products }) {
   // 2. 아래와 같이 변수로 선언
   const navigate = useNavigate();
   return (
@@ -43,33 +43,20 @@ export default function Main() {
             gap: "24px",
           }}
         >
-          <div
-            style={{
-              width: "200px",
-              height: "240px",
-              backgroundColor: "#068FFF",
-            }}
-          >
-            상품1
-          </div>
-          <div
-            style={{
-              width: "200px",
-              height: "240px",
-              backgroundColor: "#068FFF",
-            }}
-          >
-            상품2
-          </div>
-          <div
-            style={{
-              width: "200px",
-              height: "240px",
-              backgroundColor: "#068FFF",
-            }}
-          >
-            상품3
-          </div>
+          {products.map((product) => (
+            <div
+              key={product.id}
+              style={{
+                width: "200px",
+                height: "240px",
+                backgroundColor: "#068FFF",
+                color: "white",
+              }}
+            >
+              <h2>{product.name}</h2>
+              <p>가격: {product.price}</p>
+            </div>
+          ))}
         </div>
       </section>
       {/* 추가적인 데이터 */}
